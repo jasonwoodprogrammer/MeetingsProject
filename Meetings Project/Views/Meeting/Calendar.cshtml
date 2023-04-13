@@ -1,0 +1,37 @@
+﻿@model List<Meeting>
+
+
+@functions{
+
+    private string PersonListToStringList(List<Person> persons)
+    {
+        return string.Join(", ", persons.Select(x => $"{x.FirstName} {x.LastName}"));
+    }
+
+}
+
+<h1>CALENDAR</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Meeting Id</th>
+            <th scope="col">Start Time</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Room</th>
+            <th scope="col">Attendees</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meeting in Model)
+        {
+        <tr>
+            <th scope="row">@meeting.Id</th>
+            <td>@meeting.StartTime</td>
+            <td>@meeting.Duration minutes</td>
+            <td>@meeting.Room.RoomName</td>
+            <td>@PersonListToStringList(meeting.Persons.ToList())</td> 
+        </tr>
+        }
+    </tbody>
+    </table>

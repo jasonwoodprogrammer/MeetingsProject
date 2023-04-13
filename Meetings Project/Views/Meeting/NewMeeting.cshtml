@@ -1,0 +1,68 @@
+﻿@model Meetings_Project.Models.NewMeeting
+
+@{
+    var persons = ViewData["persons"] as List<Person>;
+    var rooms = ViewData["rooms"] as List<Room>;
+
+    var successMessage = ViewData["successMessage"] as string;
+}
+
+<h1>CREATE A NEW MEETING</h1>
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <h2>@successMessage</h2>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Meeting" asp-action="Calendar">Check it out on the Calendar</a>
+    <a class="nav-link text-dark" asp-area="" asp-controller="Meeting" asp-action="NewMeeting">Create a new meeting</a>
+}
+else
+{
+    <form method="post" enctype="multipart/form-data" asp-controller="Meeting" asp-action="NewMeeting">
+
+        <div class="row">
+            <div asp-validation-summary="All">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="meetingStart">Meeting start date and time</label>
+            <input asp-for="MeetingStart" class="form-control" type="datetime-local" id="meetingStart">
+        </div>
+
+        <div class="form-group">
+            <label for="duration">Meeting duration (minutes)</label>
+            <select asp-for="Duration" class="form-control" id="duration" name="duration">
+                <option>Select a meeting duration</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+                <option value="60">60</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="meetingRoomId">Room Select:</label>
+            <select asp-for="MeetingRoomId" class="form-control" id="meetingRoomId" name="meetingRoomId">
+                <option>Select a meeting room</option>
+                @foreach (var room in rooms)
+                {
+                    <option value="@room.Id">@room.RoomName</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="personIds">Example multiple select (ctrl click to select multiple)</label>
+            <select asp-for="PersonIds" multiple class="form-control" id="personIds" name="personIds">
+                @foreach (var person in persons)
+                {
+                    <option value="@person.Id">@person.FirstName @person.LastName</option>
+                }
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+}
